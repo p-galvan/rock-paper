@@ -1,5 +1,5 @@
 function getComputerChoice () {
-    
+    // Generate random number between 1 and 3 and assign to rock/paper/scissors
     let number = Math.ceil(Math.random() * 3);
     let choice;
 
@@ -17,9 +17,11 @@ function getComputerChoice () {
 }
 
 function getHumanChoice () {
+    // Prompt user for selection of rock/paper/scissors
     answer = prompt("Enter rock, paper or scissors: ");
     answer = answer.toLowerCase();
 
+    // Validate user input, reprompt if user enters invalid input
     if (answer != "rock" && answer != "paper" && answer != "scissors") {
         alert("invalid input, please try again typing rock, paper or scissors");
         return getHumanChoice();
@@ -29,17 +31,16 @@ function getHumanChoice () {
 }
 
 function playGame() {
-    
-    // Declare variables to keep track of score, rounds and result
+
+    // Declare variables to keep track of scores, rounds and result
     let humanScore = 0;
     let computerScore = 0;
     let totalRounds = 0;
     let result = "";
     
     function playRound (humanc, computerc) {
-
         if (humanc === computerc) {
-            return console.log("tie, play again!");
+            return console.log("tie!");
         }
     
         else if (humanc === "rock" && computerc === "scissors") {
@@ -60,8 +61,7 @@ function playGame() {
         else {
             computerScore++;
             return console.log("you lose!");
-        }
-            
+        }       
     }
     
     // Play the game for 5 rounds
@@ -70,6 +70,7 @@ function playGame() {
         computerChoice = getComputerChoice();
         humanChoice = getHumanChoice();
         
+        // Log user and computer choices
         console.log("computer choice: " + computerChoice);
         console.log("human choice: " + humanChoice);
 
@@ -77,6 +78,7 @@ function playGame() {
         playRound(humanChoice, computerChoice);
         totalRounds++;
 
+        // Log scores and round after every round
         console.log("human score: " + humanScore);
         console.log("computer score: " + computerScore);
         console.log("total rounds: " + totalRounds);
@@ -87,12 +89,12 @@ function playGame() {
         result = "you win the game!";
         return result;
     } 
-    else if (humanSore < computerScore){
+    else if (humanScore < computerScore){
         result = "you lose the game!";
         return result;
     }
     else {
-        result = "TIE";
+        result = "TIE!";
         return result;
     }
 
