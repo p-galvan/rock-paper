@@ -88,10 +88,15 @@ function playGame() {
         result = "you win the game!";
         return result;
     } 
-    else {
+    else if (humanSore < computerScore){
         result = "you lose the game!";
         return result;
     }
+    else {
+        result = "TIE";
+        return result;
+    }
+
 }
 
 const winner = playGame();
