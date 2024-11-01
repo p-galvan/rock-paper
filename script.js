@@ -36,6 +36,7 @@ function playGame() {
     let humanScore = 0;
     let computerScore = 0;
     let totalRounds = 0;
+    let result = "";
     
     function playRound (humanc, computerc) {
 
@@ -66,19 +67,33 @@ function playGame() {
     }
     
     while (totalRounds < 5) {
+        // Get user input before round
+        computerChoice = getComputerChoice();
+        humanChoice = getHumanChoice();
+        
+        console.log("computer choice: " + computerChoice);
+        console.log("human choice: " + humanChoice);
+
+        // Play round
         playRound(humanChoice, computerChoice);
         totalRounds++;
+
+        console.log("human score: " + humanScore);
+        console.log("computer score: " + computerScore);
+        console.log("total rounds: " + totalRounds);
+    }
+
+    // Return winner
+    if (humanScore > computerScore) {
+        result = "you win the game!";
+        return result;
+    } 
+    else {
+        result = "you lose the game!";
+        return result;
     }
 }
-// Call functions to generate random computer choice and get human choice
-const computerChoice = getComputerChoice ();
-const humanChoice = getHumanChoice ();
 
-console.log("computer choice: " + computerChoice);
-console.log("human choice: " + humanChoice);
+const winner = playGame();
 
-
-// playRound(humanChoice, computerChoice);
-
-console.log("your score: " + humanScore);
-console.log("computer score: " + computerScore);
+console.log(winner);
