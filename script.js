@@ -1,4 +1,3 @@
-
 function getComputerChoice () {
     
     let number = Math.ceil(Math.random() * 3);
@@ -29,10 +28,9 @@ function getHumanChoice () {
     return answer;
 }
 
-
-
 function playGame() {
-    // Declare score and round variables
+    
+    // Declare variables to keep track of score, rounds and result
     let humanScore = 0;
     let computerScore = 0;
     let totalRounds = 0;
@@ -66,6 +64,7 @@ function playGame() {
             
     }
     
+    // Play the game for 5 rounds
     while (totalRounds < 5) {
         // Get user input before round
         computerChoice = getComputerChoice();
@@ -99,6 +98,6 @@ function playGame() {
 
 }
 
+// Declare winner of game
 const winner = playGame();
-
 console.log(winner);
