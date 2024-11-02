@@ -38,22 +38,22 @@ function playGame() {
     let totalRounds = 0;
     let result = "";
     
-    function playRound (humanc, computerc) {
-        if (humanc === computerc) {
+    function playRound (humanChoice, computerChoice) {
+        if (humanChoice === computerChoice) {
             return console.log("tie!");
         }
     
-        else if (humanc === "rock" && computerc === "scissors") {
+        else if (humanChoice === "rock" && computerChoice === "scissors") {
             humanScore++;
             return console.log("you win!");
         }
     
-        else if (humanc === "paper" && computerc === "rock") {
+        else if (humanChoice === "paper" && computerChoice === "rock") {
             humanScore++;
             return console.log("you win!");
         }
     
-        else if (humanc === "scissors" && computerc === "paper") {
+        else if (humanChoice === "scissors" && computerChoice === "paper") {
             humanScore++;
             return console.log("you win!");
         }
