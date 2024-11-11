@@ -33,10 +33,13 @@ function getHumanChoice () {
 function playGame() {
 
     // Declare variables to keep track of scores, rounds and result
-    let humanScore = 0;
     let computerScore = 0;
+    let humanScore = 0;
     let totalRounds = 0;
     let result = "";
+    let gameInfo = document.querySelector("#game_info");
+    let choices = document.querySelector("#choices");
+    let scores = document.querySelector("scores");
     
     function playRound (humanChoice, computerChoice) {
         if (humanChoice === computerChoice) {
@@ -64,15 +67,23 @@ function playGame() {
         }       
     }
     
-    // Play the game for 5 rounds
-    while (totalRounds < 5) {
+    // Play the game until a player reaches 6 points
+    while (computerScore < 6 || humanScore < 6) {
         // Get user input before round
         computerChoice = getComputerChoice();
         humanChoice = getHumanChoice();
         
-        // Log user and computer choices
+        // Update computer and human choices in UI
+        const computerChoiceDisplay = document.createElement("span");
+        computerChoiceDisplay.textContent = "Computer choice: " + computerChoice;
         console.log("computer choice: " + computerChoice);
+
+        const humanChoiceDisplay = document.createElement("span");
+        humanChoiceDisplay.textContent = "Human choice: " + humanChoice;
         console.log("human choice: " + humanChoice);
+
+        scores.appendChild(computerChoiceDisplay);
+        scores.appendChild(humanChoiceDisplay);
 
         // Play round
         playRound(humanChoice, computerChoice);
