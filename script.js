@@ -16,47 +16,29 @@ function getComputerChoice () {
     return choice;
 }
 
-
-function playRound(humanChoice, computerChoice) {
-    if (humanChoice === computerChoice) {
-        return console.log("tie!");
-    }
-
-    else if (humanChoice === "rock" && computerChoice === "scissors") {
-        humanScore++;
-        return console.log("you win!");
-    }
-
-    else if (humanChoice === "paper" && computerChoice === "rock") {
-        humanScore++;
-        return console.log("you win!");
-    }
-
-    else if (humanChoice === "scissors" && computerChoice === "paper") {
-        humanScore++;
-        return console.log("you win!");
-    }
-
-    else {
-        computerScore++;
-        return console.log("you lose!");
-    }       
-}
-
 // Update UI after each round
 function updateChoices(humanChoice, computerChoice) {
     let choices = document.querySelector("#choices");
+    clearChildren(choices);
 
-    let computerChoiceDisplay = document.createElement("span");
-    computerChoiceDisplay.textContent = computerChoice
+    let computerChoiceDisplay = document.createElement("p");
+    computerChoiceDisplay.textContent = "computer choice: " + computerChoice;
 
-    let humanChoiceDisplay = document.createElement("span");
-    humanChoiceDisplay.textContent = humanChoice;
+    let humanChoiceDisplay = document.createElement("p");
+    humanChoiceDisplay.textContent = "your choice: " + humanChoice;
 
     choices.appendChild(humanChoiceDisplay);
     choices.appendChild(computerChoiceDisplay);
 
 }
+
+function clearChildren(parentNode) { 
+    while (parentNode.firstChild) {
+        parentNode.removeChild(parentNode.firstChild);
+    }
+    return;
+}
+
 function playGame() {
 
     // Declare variables to keep track of scores, rounds and result
@@ -68,6 +50,31 @@ function playGame() {
     let choices = document.querySelector("#choices");
     let scores = document.querySelector("#scores");
     
+    function playRound(humanChoice, computerChoice) {
+        if (humanChoice === computerChoice) {
+            return console.log("tie!");
+        }
+    
+        else if (humanChoice === "rock" && computerChoice === "scissors") {
+            humanScore++;
+            return console.log("you win!");
+        }
+    
+        else if (humanChoice === "paper" && computerChoice === "rock") {
+            humanScore++;
+            return console.log("you win!");
+        }
+    
+        else if (humanChoice === "scissors" && computerChoice === "paper") {
+            humanScore++;
+            return console.log("you win!");
+        }
+    
+        else {
+            computerScore++;
+            return console.log("you lose!");
+        }       
+    }
     
     // Event listeners for player selection buttons
     let btn = document.querySelector("#choiceBtns");
@@ -77,42 +84,29 @@ function playGame() {
             computerChoice = getComputerChoice();
 
             playRound(humanChoice, computerChoice);
+            updateChoices(humanChoice, computerChoice);
         }
         else if (event.target.id === "paperBtn") {
             humanChoice = "paper";
             computerChoice = getComputerChoice();
 
             playRound(humanChoice, computerChoice);
+            updateChoices(humanChoice, computerChoice);
         }
         else {
             humanChoice = "scissors";
             computerChoice = getComputerChoice();
 
             playRound(humanChoice, computerChoice);
+            updateChoices(humanChoice, computerChoice);
         }
     });
 
 
 
-    // Play the game until a player reaches 6 points
-    
-    // Update computer and human choices in UI
-    const computerChoiceDisplay = document.createElement("span");
-    computerChoiceDisplay.textContent = "Computer choice: " + computerChoice;
-    console.log("computer choice: " + computerChoice);
-
-    const humanChoiceDisplay = document.createElement("span");
-    humanChoiceDisplay.textContent = "Human choice: " + humanChoice;
-    console.log("human choice: " + humanChoice);
-
-    scores.appendChild(computerChoiceDisplay);
-    scores.appendChild(humanChoiceDisplay);
-
-
     // Log scores and round after every round
     console.log("human score: " + humanScore);
     console.log("computer score: " + computerScore);
-    console.log("total rounds: " + totalRounds);
 
 
     // // Return winner
