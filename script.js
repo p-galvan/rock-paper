@@ -21,14 +21,14 @@ function updateChoices(humanChoice, computerChoice) {
     let choices = document.querySelector("#choices");
     clearChildren(choices);
 
-    let computerChoiceDisplay = document.createElement("p");
-    computerChoiceDisplay.textContent = "computer choice: " + computerChoice;
+    let computerChoiceDisp = document.createElement("p");
+    computerChoiceDisp.textContent = "computer choice: " + computerChoice;
 
-    let humanChoiceDisplay = document.createElement("p");
-    humanChoiceDisplay.textContent = "your choice: " + humanChoice;
+    let humanChoiceDisp = document.createElement("p");
+    humanChoiceDisp.textContent = "your choice: " + humanChoice;
 
-    choices.appendChild(humanChoiceDisplay);
-    choices.appendChild(computerChoiceDisplay);
+    choices.appendChild(humanChoiceDisp);
+    choices.appendChild(computerChoiceDisp);
 
 }
 
@@ -39,6 +39,52 @@ function clearChildren(parentNode) {
     return;
 }
 
+function updateScores(humanScore, computerScore) {
+    let scores = document.querySelector("#scores");
+    clearChildren(scores);
+
+    let computerScoreDisp = document.createElement("p");
+    computerScoreDisp.textContent = "computer score: " + computerScore;
+
+    let humanScoreDisp = document.createElement("p");
+    humanScoreDisp.textContent = "your score: " + humanScore;
+
+    scores.appendChild(humanScoreDisp);
+    scores.appendChild(computerScoreDisp);
+}
+
+function roundResult(roundWinner) {
+    let roundResult = document.querySelector("#roundResult");
+    clearChildren(roundResult);
+
+    let winner = document.createElement("p");
+    
+    if (roundWinner === "human") {
+        winner.textContent = "You win the round!";
+    }
+    else if (roundWinner === "computer") {
+        winner.textContent = "You lose the round!";
+    }
+
+    roundResult.appendChild(winner);
+}
+
+function gameWinner(winner) {
+    let gameResult = document.querySelector("#roundResult");
+    clearChildren(gameResult);
+
+    let winner = document.createElement("p");
+
+    if (winner === "human") {
+        winner.textContent = "Congratulations! You win the game!";
+    }
+    else {
+        winner.textContent = "Game over! You lose!";
+    }
+
+    gameResult.appendChild(winner);
+}
+
 function playGame() {
 
     // Declare variables to keep track of scores, rounds and result
@@ -47,32 +93,32 @@ function playGame() {
     let humanChoice = "";
     let result = "";
     let gameInfo = document.querySelector("#game_info");
-    let choices = document.querySelector("#choices");
-    let scores = document.querySelector("#scores");
-    
-    function playRound(humanChoice, computerChoice) {
+
+    function playRound(humanChoice, computerChoice) { 
+
+
         if (humanChoice === computerChoice) {
             return console.log("tie!");
         }
     
         else if (humanChoice === "rock" && computerChoice === "scissors") {
             humanScore++;
-            return console.log("you win!");
+            return updateScores(humanScore, computerScore);
         }
     
         else if (humanChoice === "paper" && computerChoice === "rock") {
             humanScore++;
-            return console.log("you win!");
+            return updateScores(humanScore, computerScore);
         }
     
         else if (humanChoice === "scissors" && computerChoice === "paper") {
             humanScore++;
-            return console.log("you win!");
+            return updateScores(humanScore, computerScore);
         }
     
         else {
             computerScore++;
-            return console.log("you lose!");
+            return updateScores(humanScore, computerScore);
         }       
     }
     
@@ -101,30 +147,7 @@ function playGame() {
             updateChoices(humanChoice, computerChoice);
         }
     });
-
-
-
-    // Log scores and round after every round
-    console.log("human score: " + humanScore);
-    console.log("computer score: " + computerScore);
-
-
-    // // Return winner
-    // if (humanScore > computerScore) {
-    //     result = "you win the game!";
-    //     return result;
-    // } 
-    // else if (humanScore < computerScore){
-    //     result = "you lose the game!";
-    //     return result;
-    // }
-    // else {
-    //     result = "TIE!";
-    //     return result;
-    // }
-
 }
 
-// Declare winner of game
-const winner = playGame();
-console.log(winner);
+playGame();
+
