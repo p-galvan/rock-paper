@@ -33,10 +33,14 @@ function updateChoices(humanChoice, computerChoice) {
 }
 
 function clearChildren(parentNode) { 
-    while (parentNode.firstChild) {
-        parentNode.removeChild(parentNode.firstChild);
+    if (!parentNode) {
+        return;
     }
-    return;
+    else {
+        while (parentNode.firstChild) {
+            parentNode.removeChild(parentNode.firstChild);
+        }
+    }
 }
 
 function updateScores(humanScore, computerScore) {
@@ -53,73 +57,93 @@ function updateScores(humanScore, computerScore) {
     scores.appendChild(computerScoreDisp);
 }
 
-function roundResult(roundWinner) {
-    let roundResult = document.querySelector("#roundResult");
-    clearChildren(roundResult);
+function roundResult(round_winner) {
+    let round = document.querySelector("#roundResult");
+    clearChildren(round);
 
-    let winner = document.createElement("p");
-    
-    if (roundWinner === "human") {
-        winner.textContent = "You win the round!";
+    let winnerDisp = document.createElement("p");
+    winnerDisp.textContent = "";
+
+    if (round_winner === "human") {
+        winnerDisp.textContent = "You win the round!";
     }
-    else if (roundWinner === "computer") {
-        winner.textContent = "You lose the round!";
+    else if (round_winner === "computer") {
+        winnerDisp.textContent = "You lose the round!";
+    }
+    else {
+        winnerDisp.textContent = "Tie!";
     }
 
-    roundResult.appendChild(winner);
+    round.appendChild(winnerDisp);
 }
 
 function gameWinner(winner) {
     let gameResult = document.querySelector("#roundResult");
     clearChildren(gameResult);
 
-    let winner = document.createElement("p");
+    let winnerDisp = document.createElement("p");
 
+    // Determine game winner
     if (winner === "human") {
-        winner.textContent = "Congratulations! You win the game!";
+        winnerDisp.textContent = "Congratulations! You win the game!";
     }
     else {
-        winner.textContent = "Game over! You lose!";
+        winnerDisp.textContent = "Game over! You lose!";
     }
 
-    gameResult.appendChild(winner);
+    // Disable buttons
+    disableButtons();
+
+    // Display winner
+    gameResult.appendChild(winnerDisp);
+}
+
+function disableButtons() {
+    let btn = document.querySelectorAll("button");
+    btn.forEach (button => {
+        button.disabled = true;
+    });
 }
 
 function playGame() {
-
     // Declare variables to keep track of scores, rounds and result
     let computerScore = 0;
     let humanScore = 0;
+    let computerChoice = "";
     let humanChoice = "";
-    let result = "";
-    let gameInfo = document.querySelector("#game_info");
-
+    
     function playRound(humanChoice, computerChoice) { 
-
-
+        let roundWinner = "";
+        
         if (humanChoice === computerChoice) {
-            return console.log("tie!");
+            roundWinner = "tie";
+            return roundResult(roundWinner);
         }
     
         else if (humanChoice === "rock" && computerChoice === "scissors") {
             humanScore++;
-            return updateScores(humanScore, computerScore);
+            roundWinner = "human";
+            return roundResult(roundWinner);
         }
     
         else if (humanChoice === "paper" && computerChoice === "rock") {
             humanScore++;
-            return updateScores(humanScore, computerScore);
+            roundWinner = "human";
+            return roundResult(roundWinner);
         }
     
         else if (humanChoice === "scissors" && computerChoice === "paper") {
             humanScore++;
-            return updateScores(humanScore, computerScore);
+            roundWinner = "human";
+            return roundResult(roundWinner);
         }
     
         else {
             computerScore++;
-            return updateScores(humanScore, computerScore);
+            roundWinner = "computer";
+            return roundResult(roundWinner);
         }       
+
     }
     
     // Event listeners for player selection buttons
@@ -131,6 +155,7 @@ function playGame() {
 
             playRound(humanChoice, computerChoice);
             updateChoices(humanChoice, computerChoice);
+            updateScores(humanScore, computerScore);
         }
         else if (event.target.id === "paperBtn") {
             humanChoice = "paper";
@@ -138,6 +163,7 @@ function playGame() {
 
             playRound(humanChoice, computerChoice);
             updateChoices(humanChoice, computerChoice);
+            updateScores(humanScore, computerScore);
         }
         else {
             humanChoice = "scissors";
@@ -145,8 +171,17 @@ function playGame() {
 
             playRound(humanChoice, computerChoice);
             updateChoices(humanChoice, computerChoice);
+            updateScores(humanScore, computerScore);
+        }
+
+        if (humanScore >= 5) {
+            gameWinner(winner = "human");
+        }
+        else if (computerScore >= 5) {
+            gameWinner(winner = "computer");
         }
     });
+
 }
 
 playGame();
