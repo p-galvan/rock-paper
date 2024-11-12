@@ -1,3 +1,7 @@
+let HUMAN_SCORE = 0;
+let COMPUTER_SCORE = 0;
+
+// Generate random computer choice
 function getComputerChoice () {
     // Generate random number between 1 and 3 and assign to rock/paper/scissors
     let number = Math.ceil(Math.random() * 3);
@@ -16,7 +20,7 @@ function getComputerChoice () {
     return choice;
 }
 
-// Update UI after each round
+// Update UI choices after each round
 function updateChoices(humanChoice, computerChoice) {
     let choices = document.querySelector("#choices");
     clearChildren(choices);
@@ -32,6 +36,7 @@ function updateChoices(humanChoice, computerChoice) {
 
 }
 
+// Clears all child nodes
 function clearChildren(parentNode) { 
     if (!parentNode) {
         return;
@@ -43,21 +48,38 @@ function clearChildren(parentNode) {
     }
 }
 
-function updateScores(humanScore, computerScore) {
+// Update scores
+function computeScores(roundWinner) {
+
+    if (roundWinner === "human") {
+        HUMAN_SCORE++;
+    }
+    else if (roundWinner === "computer") {
+        COMPUTER_SCORE++;
+    }
+    
+    updateScoresUI(HUMAN_SCORE, COMPUTER_SCORE);
+    
+    return;
+}
+
+// Update UI after computing scores
+function updateScoresUI(HUMAN_SCORE, COMPUTER_SCORE) {
     let scores = document.querySelector("#scores");
     clearChildren(scores);
 
-    let computerScoreDisp = document.createElement("p");
-    computerScoreDisp.textContent = "computer score: " + computerScore;
+    let cScore = document.createElement("p");
+    cScore.textContent = "computer score: " + COMPUTER_SCORE;
 
-    let humanScoreDisp = document.createElement("p");
-    humanScoreDisp.textContent = "your score: " + humanScore;
+    let hScore = document.createElement("p");
+    hScore.textContent = "your score: " + HUMAN_SCORE;
 
-    scores.appendChild(humanScoreDisp);
-    scores.appendChild(computerScoreDisp);
+    scores.appendChild(hScore);
+    scores.appendChild(cScore);
 }
 
-function roundResult(round_winner) {
+// Display round result
+function updateResultUI(round_winner) {
     let round = document.querySelector("#roundResult");
     clearChildren(round);
 
@@ -77,7 +99,8 @@ function roundResult(round_winner) {
     round.appendChild(winnerDisp);
 }
 
-function gameWinner(winner) {
+// Display game winner
+function gameOver(winner) {
     let gameResult = document.querySelector("#roundResult");
     clearChildren(gameResult);
 
@@ -98,6 +121,7 @@ function gameWinner(winner) {
     gameResult.appendChild(winnerDisp);
 }
 
+// Disable game buttons when game is over
 function disableButtons() {
     let btn = document.querySelectorAll("button");
     btn.forEach (button => {
@@ -105,46 +129,61 @@ function disableButtons() {
     });
 }
 
-function playGame() {
+// Determines round winner based on human & computer choices
+function validateRound(humanChoice, computerChoice) {
+    let roundWinner = "";
+        
+    if (humanChoice === computerChoice) {
+        roundWinner = "tie";
+    }
+
+    else if (humanChoice === "rock" && computerChoice === "scissors") {
+        roundWinner = "human";
+    }
+
+    else if (humanChoice === "paper" && computerChoice === "rock") {
+        roundWinner = "human";
+    }
+
+    else if (humanChoice === "scissors" && computerChoice === "paper") {
+        roundWinner = "human";
+    }
+
+    else {
+        roundWinner = "computer";
+    }       
+
+
+    updateResultUI(roundWinner);
+    return roundWinner;
+}
+
+function playRound(humanChoice, computerChoice) {
+    let gameWinner = "";
+
+    // Validates round winner
+    let roundWinner = validateRound(humanChoice, computerChoice);
+
+    // Update Scores
+    computeScores(roundWinner);
+
+    // If game has a winner, call gameOver
+    if (HUMAN_SCORE >= 5) {
+        gameWinner = "human";
+        return gameOver(gameWinner);
+    }
+    else if (COMPUTER_SCORE >= 5) {
+        gameWinner = "computer";
+        return gameOver(gameWinner);
+    }
+
+    return;
+}
+
+function main() {
     // Declare variables to keep track of scores, rounds and result
-    let computerScore = 0;
-    let humanScore = 0;
     let computerChoice = "";
     let humanChoice = "";
-    
-    function playRound(humanChoice, computerChoice) { 
-        let roundWinner = "";
-        
-        if (humanChoice === computerChoice) {
-            roundWinner = "tie";
-            return roundResult(roundWinner);
-        }
-    
-        else if (humanChoice === "rock" && computerChoice === "scissors") {
-            humanScore++;
-            roundWinner = "human";
-            return roundResult(roundWinner);
-        }
-    
-        else if (humanChoice === "paper" && computerChoice === "rock") {
-            humanScore++;
-            roundWinner = "human";
-            return roundResult(roundWinner);
-        }
-    
-        else if (humanChoice === "scissors" && computerChoice === "paper") {
-            humanScore++;
-            roundWinner = "human";
-            return roundResult(roundWinner);
-        }
-    
-        else {
-            computerScore++;
-            roundWinner = "computer";
-            return roundResult(roundWinner);
-        }       
-
-    }
     
     // Event listeners for player selection buttons
     let btn = document.querySelector("#choiceBtns");
@@ -154,35 +193,21 @@ function playGame() {
             computerChoice = getComputerChoice();
 
             playRound(humanChoice, computerChoice);
-            updateChoices(humanChoice, computerChoice);
-            updateScores(humanScore, computerScore);
         }
         else if (event.target.id === "paperBtn") {
             humanChoice = "paper";
             computerChoice = getComputerChoice();
 
             playRound(humanChoice, computerChoice);
-            updateChoices(humanChoice, computerChoice);
-            updateScores(humanScore, computerScore);
         }
         else {
             humanChoice = "scissors";
             computerChoice = getComputerChoice();
 
             playRound(humanChoice, computerChoice);
-            updateChoices(humanChoice, computerChoice);
-            updateScores(humanScore, computerScore);
-        }
-
-        if (humanScore >= 5) {
-            gameWinner(winner = "human");
-        }
-        else if (computerScore >= 5) {
-            gameWinner(winner = "computer");
         }
     });
-
 }
 
-playGame();
+main();
 
