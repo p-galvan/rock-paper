@@ -48,7 +48,7 @@ function clearChildren(parentNode) {
     }
 }
 
-// Update scores
+// Compute and update scores
 function computeScores(roundWinner) {
 
     if (roundWinner === "human") {
@@ -136,25 +136,21 @@ function validateRound(humanChoice, computerChoice) {
     if (humanChoice === computerChoice) {
         roundWinner = "tie";
     }
-
     else if (humanChoice === "rock" && computerChoice === "scissors") {
         roundWinner = "human";
     }
-
     else if (humanChoice === "paper" && computerChoice === "rock") {
         roundWinner = "human";
     }
-
     else if (humanChoice === "scissors" && computerChoice === "paper") {
         roundWinner = "human";
     }
-
     else {
         roundWinner = "computer";
+    
     }       
-
-
     updateResultUI(roundWinner);
+    
     return roundWinner;
 }
 
